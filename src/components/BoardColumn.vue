@@ -1,12 +1,11 @@
-<template>
-  <div>
-    <div
+ <template>
+  <AppDrop @drop="moveTaskOrColumn">
+    <AppDrag
       class="column"
-      draggable
-      @drop="moveTaskOrColumn($event, column.tasks, columnIndex)"
-      @dragover.prevent
-      @dragenter.prevent
-      @dragstart.self="pickupColumn($event, columnIndex)"
+      :transferData="{
+            type: 'column',
+            fromColumnIndex: columnIndex
+          }"
     >
       <div class="flex items-center mb-2 font-bold">{{ column.name }}</div>
       <div class="list-reset">
@@ -27,17 +26,21 @@
           @keyup.enter="createTask($event, column.tasks)"
         />
       </div>
-    </div>
-  </div>
+    </AppDrag>
+  </AppDrop>
 </template>
 
 <script>
 import ColumnTask from "./ColumnTask";
+import AppDrag from "./AppDrag";
+import AppDrop from "./AppDrop";
 import movingTasksAndColumnsMixin from "@/mixins/movingTasksAndColumnsMixin.js";
 
 export default {
   components: {
-    ColumnTask
+    ColumnTask,
+    AppDrag,
+    AppDrop
   },
   mixins: [movingTasksAndColumnsMixin],
 
